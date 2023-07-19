@@ -16,13 +16,18 @@ public class Medida {
     private float IMC;
     
     public Medida(int pidMedida,int pidUsuario, String pFecha, int pPeso,float pIMC)
-            {
-                this.idMedida = pidMedida;
-                this.idUsuario = pidUsuario;
-                this.Fecha = pFecha;
-                this.Peso = pPeso;
-                this.IMC = pIMC;
-            }
+    {
+        this.idMedida = pidMedida;
+        this.idUsuario = pidUsuario;
+        this.Fecha = pFecha;
+        this.Peso = pPeso;
+        this.IMC = pIMC;
+    }
+    
+    public Medida(int pPeso)
+    {
+        this.Peso = pPeso;
+    }
 
     public int getIdMedida() {
         return idMedida;
@@ -47,6 +52,14 @@ public class Medida {
     public void setFecha(String Fecha) {
         this.Fecha = Fecha;
     }
+    
+    public int getPeso() {
+        return this.Peso;
+    }
+
+    public void setPeso(int Peso) {
+        this.Peso = Peso;
+    }
 
     public float getIMC() {
         return IMC;
@@ -54,5 +67,14 @@ public class Medida {
 
     public void setIMC(float IMC) {
         this.IMC = IMC;
+    }
+    
+    public String ValidaPeso()
+    {
+        String sValidacion = "";
+        if (this.Peso <= 0) {
+            sValidacion = "El peso debe ser mayor a cero";
+        }
+        return sValidacion;
     }
 }

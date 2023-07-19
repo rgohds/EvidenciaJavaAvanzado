@@ -12,16 +12,18 @@ public class Usuario {
     private int idUsuario;
     private String NombreCompleto;
     private String NombreUsuario;
+    private String Pwd;
     private int Edad;
-    private char Sexo;
+    private String Sexo;
     private int Estatura;    
     
     public Usuario(int pidUsuario, String pNombreCompleto,
-            String pNombreUsuario, int pEdad, char pSexo,
+            String pNombreUsuario, String pPwd, int pEdad, String pSexo,
             int pEstatura) {
         this.idUsuario = pidUsuario;
         this.NombreCompleto = pNombreCompleto;
         this.NombreUsuario = pNombreUsuario;
+        this.Pwd = pPwd;
         this.Edad = pEdad;
         this.Sexo = pSexo;
         this.Estatura = pEstatura;
@@ -50,6 +52,14 @@ public class Usuario {
     public void setNombreUsuario(String NombreUsuario) {
         this.NombreUsuario = NombreUsuario;
     }
+    
+    public String getPwd() {
+        return Pwd;
+    }
+
+    public void setPwd(String Pwd) {
+        this.Pwd = Pwd;
+    }
 
     public int getEdad() {
         return Edad;
@@ -59,11 +69,11 @@ public class Usuario {
         this.Edad = Edad;
     }
 
-    public char getSexo() {
+    public String getSexo() {
         return Sexo;
     }
 
-    public void setSexo(char Sexo) {
+    public void setSexo(String Sexo) {
         this.Sexo = Sexo;
     }
 
@@ -73,6 +83,29 @@ public class Usuario {
 
     public void setEstatura(int Estatura) {
         this.Estatura = Estatura;
+    }
+    
+    public float CalcIMC(int peso) {
+        return (float) peso / (float) (((float) this.Estatura/100) * ((float)this.Estatura/100));
+    }
+    
+    public static String ValidaDatosUsuario(int pEdad, int pEstatura, String NombreUsuario, String Pwd )
+    {
+        String Smensaje = "";
+        if (NombreUsuario.equals("")) {
+               Smensaje = "Introduzca un nombre de usuario";
+        } else if (Pwd.equals("") ) {
+               Smensaje = "Introduzca un password";
+        }        
+        else if (pEdad < 15 ) {
+               Smensaje = "La edad minima es de 15 años";
+        } 
+        else if (pEstatura < 100 ) {
+               Smensaje = "La estatura minima son 100 cm";
+        } else if (pEstatura > 250 ) {
+               Smensaje = "La estatura maxima son 250 cm";
+        }
+        return Smensaje;
     }
             
 }

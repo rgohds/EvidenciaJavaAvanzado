@@ -14,9 +14,8 @@
     <body>
         <h1>Evidencia - IMC Tracking</h1>
         <form action="IMC" method="post">            
-            <input type="submit" name = "sel" value="AltaUsuario">
-            <input type="submit" name = "sel" value="calcular">
-            <input type="submit" name = "sel" value="Visualizar Historico">
+            <input type="submit" name = "sel" value="Login">
+            <input type="submit" name = "sel" value="AltaUsuario">            
         </form>
     </body>
 </html>

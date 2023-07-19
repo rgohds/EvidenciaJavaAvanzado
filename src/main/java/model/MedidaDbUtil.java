@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -18,7 +20,7 @@ import java.util.List;
  */
 public class MedidaDbUtil {
     
-    public static List<model.Medida> getMedidas() throws ClassNotFoundException, SQLException
+    public static List<model.Medida> getMedidas(String IdUsuario) throws ClassNotFoundException, SQLException
     {
         String url = "jdbc:mysql://localhost:3306/evidencia?useSSL=false";
         String userName = "root";
@@ -31,7 +33,11 @@ public class MedidaDbUtil {
         
         Statement stmt = con.createStatement();
         
-        ResultSet rs = stmt.executeQuery("select * from tblmedida");
+        String query = "select * from tblmedida where idUsuario = " + IdUsuario;
+        query = query + " order by fecha";
+        
+        
+        ResultSet rs = stmt.executeQuery(query);
         
         while (rs.next())
         {
@@ -45,5 +51,44 @@ public class MedidaDbUtil {
         }       
         return Medidas;        
     }
-    
+
+    public static boolean InsertMedida(model.Usuario U, int peso) throws ClassNotFoundException, SQLException
+    {
+        String url = "jdbc:mysql://localhost:3306/evidencia?useSSL=false";
+        String userName = "root";
+        String password = "j$NT1hm$uCIf2aMU";
+        
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection con = DriverManager.getConnection(url,userName,password);
+        
+        Statement stmt = con.createStatement();
+        
+        String querymax = "select max(idMedida) from tblmedida";
+        ResultSet rsmax = stmt.executeQuery(querymax);
+        
+        int Max = 0;
+        
+        int rowCount = 0;
+        while (rsmax.next()) {
+               rowCount++;
+               Max = Integer.valueOf(rsmax.getString(1));
+          }
+        Max = Max + 1;
+        
+        String queryIns = "Insert Into tblmedida ";
+        queryIns = queryIns + "(IdMedida,idUsuario,Fecha,Peso,IMC) values(" ;        
+        queryIns = queryIns + Max + ",";
+        queryIns = queryIns + String.valueOf(U.getIdUsuario()) + ",";
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDateTime now = LocalDateTime.now();                
+        queryIns = queryIns + "'" + dtf.format(now) + "',";
+        queryIns = queryIns + String.valueOf(peso) + ",";
+        queryIns = queryIns + U.CalcIMC(peso) + ")";      
+        
+                       
+        boolean resultado = stmt.execute(queryIns);
+                     
+        return !resultado;        
+    }    
+        
 }
